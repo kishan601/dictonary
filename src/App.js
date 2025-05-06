@@ -2,42 +2,42 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [definition, setDefinition] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [result, setResult] = useState("");
 
-  const dictionary = [
-    { word: "React", meaning: "A JavaScript library for building user interfaces." },
-    { word: "Component", meaning: "A reusable building block in React." },
-    { word: "State", meaning: "An object that stores data for a component." },
-  ];
+  const dictionary = {
+    hello: "A greeting or expression of goodwill.",
+    world: "The earth, together with all of its countries and peoples.",
+    react: "A JavaScript library for building user interfaces."
+  };
 
   const handleSearch = () => {
-    const found = dictionary.find(
-      (entry) => entry.word.toLowerCase() === searchTerm.trim().toLowerCase()
-    );
-
-    if (found) {
-      setDefinition(found.meaning);
+    const lowerText = searchText.toLowerCase();
+    if (dictionary[lowerText]) {
+      setResult(dictionary[lowerText]);
     } else {
-      setDefinition("Word not found in the dictionary.");
+      setResult("Word not found in dictionary.");
     }
   };
 
   return (
-    <div className="container">
-      <h1>Dictionary App</h1>
+    <div className="App">
+      <h1>Dictionary</h1>
       <input
+        id="searchBox"
         type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Enter a word"
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
       />
-      <button onClick={handleSearch}>Search</button>
-
-      <div className="definition-box">
-        <h3>Definition:</h3>
-        <p>{definition || "Word not found in the dictionary."}</p>
-      </div>
+      <button id="searchBtn" onClick={handleSearch}>
+        Search
+      </button>
+      {result && (
+        <div id="resultArea">
+          <p>{result}</p>
+        </div>
+      )}
     </div>
   );
 }
