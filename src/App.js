@@ -1,43 +1,47 @@
 import React, { useState } from "react";
 import "./App.css";
 
-function App() {
-  const [searchText, setSearchText] = useState("");
-  const [result, setResult] = useState("");
+const dictionary = {
+  React: "A JavaScript library for building user interfaces.",
+  Component: "A reusable building block in React.",
+};
 
-  const dictionary = {
-    hello: "A greeting or expression of goodwill.",
-    world: "The earth, together with all of its countries and peoples.",
-    react: "A JavaScript library for building user interfaces."
-  };
+function App() {
+  const [word, setWord] = useState("");
+  const [definition, setDefinition] = useState("");
 
   const handleSearch = () => {
-    const lowerText = searchText.toLowerCase();
-    if (dictionary[lowerText]) {
-      setResult(dictionary[lowerText]);
+    if (!word.trim()) {
+      setDefinition("Word not found in dictionary.");
+      return;
+    }
+
+    const normalizedWord = word.trim().toLowerCase();
+    const foundEntry = Object.keys(dictionary).find(
+      (key) => key.toLowerCase() === normalizedWord
+    );
+
+    if (foundEntry) {
+      setDefinition(dictionary[foundEntry]);
     } else {
-      setResult("Word not found in dictionary.");
+      setDefinition("Word not found in dictionary.");
     }
   };
 
   return (
-    <div className="App">
-      <h1>Dictionary</h1>
+    <div className="app">
+      <h1>Dictionary App</h1>
       <input
-        id="searchBox"
         type="text"
+        value={word}
+        onChange={(e) => setWord(e.target.value)}
         placeholder="Enter a word"
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
       />
-      <button id="searchBtn" onClick={handleSearch}>
-        Search
-      </button>
-      {result && (
-        <div id="resultArea">
-          <p>{result}</p>
-        </div>
-      )}
+      <button onClick={handleSearch}>Search</button>
+      <div>
+        <strong>Definition:</strong>
+        <p>{definition}</p>
+      </div>
     </div>
   );
 }
